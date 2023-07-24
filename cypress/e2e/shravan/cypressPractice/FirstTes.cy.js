@@ -14,12 +14,7 @@ cy.get('.products').find('.product').should('have.length', 4)
 //cypress will wait for 2 second and find the 2nd product in list and add it to the cart
 cy.wait(2000)
 cy.get('.products').find('.product').eq(1).contains('ADD TO CART').click()
-//it will iterate all the product & find the desired product and add it to the cart
-cy.get('@productLocator').find('.product').eq(2).contains('ADD TO CART').click().then(function()
-{
-    console.log('sf')
-})
- 
+cy.get('.products').as('productLocator')
 cy.get('@productLocator').find('.product').each(($el, index, $list) => {
  
 const textVeg=$el.find('h4.product-name').text()
@@ -33,11 +28,11 @@ $el.find('button').click()
 cy.get('.brand').should('have.text','GREENKART')
  
 //this is to print in logs
-cy.get('.brand').then(function(logoelement)
-{
-    cy.log(logoelement.text())
+//cy.get('.brand').then(function(logoelement)
+// {
+//     cy.log(logoelement.text())
  
-})
+// })
 //const logo=cy.get('.brand')
 //cy.log(cy.get('.brand').text())
 // cy.log(logo.text())
