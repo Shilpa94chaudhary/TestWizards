@@ -1,3 +1,4 @@
+/// <reference types="Cypress" />
 describe('My Third Test Suite', function() 
 {
  
@@ -19,7 +20,15 @@ cy.get('.ui-menu-item div').each(($e1, index, $list) => {
     {
         $e1.click()
     }
-    cy.get('#autocomplete').should('have.value','India')
 })
+//visible elements
+cy.get('#autocomplete').should('have.value','India')
+cy.get('#displayed-text').should('be.visible')
+cy.get('#hide-textbox').click()
+cy.get('#displayed-text').should('not.be.visible')
+cy.get('#show-textbox').click()
+cy.get('#displayed-text').should('be.visible')
+//checking radiobuttons
+cy.get('[for="radio3"] > .radioButton').check().should('have.value','radio3')
 })
 })
