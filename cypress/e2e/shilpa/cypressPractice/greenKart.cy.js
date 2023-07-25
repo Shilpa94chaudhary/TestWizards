@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
-describe("Test page load", () => {
+import { times } from "lodash";
+describe("Greenkart test cases", () => {
   beforeEach(() => {
     cy.viewport(1280, 800);
     cy.visit("https://rahulshettyacademy.com/seleniumPractise/#/");
@@ -43,6 +44,17 @@ describe("Test page load", () => {
       .find(".product")
       .each(($element, index, $list) => {
         const productName = $element.find("h4.product-name").text();
+
+        cy.log(index);
+        cy.log($element.find("h4.product-name").text());
+
+        // To add item using Index
+        cy.get(".products")
+          .find(".product")
+          .eq(index)
+          .contains("ADD TO CART")
+          .click();
+
         if (productName.includes("Cashews")) {
           cy.wrap($element).find("button").click();
         }
@@ -104,8 +116,44 @@ describe("Test page load", () => {
       .click();
   });
 
-  it.only("Assertion", () => {
+  it("Assertion", () => {
     // assert if logo text is correct or not
     cy.get(".brand").should("have.text", "GREENKART");
+  });
+
+  it("Add product to card and go to cart", () => {
+    // Search for 'Ca'
+    cy.get(".search-keyword").type("ca");
+    cy.wait(3000);
+    // search for 'Cashews' in filtered option
+    cy.get(".products")
+      .find(".product")
+      .each(($element, index, $list) => {
+        const productName = $element.find("h4.product-name").text();
+        if (productName.includes("Cashews")) {
+          cy.wrap($element).find("button").click();
+        }
+      });
+
+    // Click on cart icon to open popup
+    cy.get(".cart-icon").find("img").click();
+    cy.contains("PROCEED TO CHECKOUT").click();
+    cy.wait(2000);
+    // Click on Place Order button
+    cy.contains("Place Order").click();
+  });
+
+  it("Add a item multiple time", () => {
+    // Click on button multiple times using for loop
+    for (let i = 0; i < 4; i++) {
+      cy.get(".products .product").eq(1).find(".increment").click();
+    }
+
+    cy.get(".products .product").eq(0).find(".increment").click();
+
+    // Using times function
+    times(5, () => {
+      cy.get(".products .product").eq(3).find(".increment").click();
+    });
   });
 });
