@@ -87,4 +87,49 @@ describe("Automation Practice website test cases", () => {
       expect(confirmMsg).be.equal("Hello , Are you sure you want to confirm?");
     });
   });
+
+  it("Open the link with target value _blank, in same window by manipulating ", () => {
+    // Invoke the jQuery function to remove the attribute which open the link in new tab
+    // by using invoke command
+
+    // .invoke will invoke jquery function removeAttr to remove target attribute from the button
+    cy.get("#opentab").invoke("removeAttr", "target").click();
+  });
+
+  it("Navigate back to previous page", () => {
+    cy.url().should("include", "AutomationPractice");
+    cy.get("#opentab").invoke("removeAttr", "target").click();
+    cy.url().should("include", "qaclickacademy");
+    cy.go("back");
+    cy.url().should("include", "AutomationPractice");
+    cy.go("forward");
+  });
+
+  it("Handle web tables with cypress", () => {
+    cy.get(".table-display tr td:nth-child(2)").each(($el, index, $list) => {
+      const courseName = $el.text();
+      if (courseName.includes("Python Language")) {
+        cy.get(".table-display tr td:nth-child(2)")
+          .eq(index)
+          .next()
+          .then(function (price) {
+            const priceText = price.text();
+            expect(priceText).to.equal("25");
+          });
+      }
+    });
+  });
+
+  it("Handle mouse hover popups by .invoke('show') method", () => {
+    // Apply .invoke("show") method on the parent of the hidden content
+    cy.get(".mouse-hover-content").invoke("show");
+    cy.contains("Top").click();
+    cy.url().should("include", "top");
+  });
+
+  it("Handle mouse hover popups by forcefully clicking on invisible element", () => {
+    // Click on hidden element forcefully by using {force:tru}, it will click on invisible element
+    cy.contains("Top").click({ force: true });
+    cy.url().should("include", "top");
+  });
 });
