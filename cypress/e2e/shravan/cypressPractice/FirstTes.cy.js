@@ -37,4 +37,17 @@ cy.get('.brand').should('have.text','GREENKART')
 //cy.log(cy.get('.brand').text())
 // cy.log(logo.text())
 })
+it("Add a item multiple time", () => {
+    // Click on button multiple times using for loop
+    for (let i = 0; i < 4; i++) {
+      cy.get(".products .product").eq(1).find(".increment").click();
+    }
+
+    cy.get(".products .product").eq(0).find(".increment").click();
+
+    // Using times function
+    times(5, () => {
+      cy.get(".products .product").eq(3).find(".increment").click();
+    });
+  })
 })

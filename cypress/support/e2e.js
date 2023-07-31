@@ -18,6 +18,7 @@ import "./commands";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
 if (Cypress.config("hideXHRInCommandLog")) {
   const app = window.top;
 
