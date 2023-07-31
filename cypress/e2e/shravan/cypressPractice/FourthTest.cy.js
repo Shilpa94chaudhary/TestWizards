@@ -23,12 +23,28 @@ it('New Tab Case', function(){
     // cy.go('forward')
 })
 // go back function
-it.only('Demo test', function(){
+it('Demo test', function(){
     cy.visit('https://www.youtube.com/')
     cy.wait(5000);
     cy.get("a[title='Library']").click()
     cy.wait(5000)
     cy.url().should('include','library')
     cy.go('back')
+})
+it('Check table case', function(){
+    cy.get('tr td:nth-child(2)').each(($e1, index, $list) => {
+ 
+        const text=$e1.text()
+        if(text.includes("Python"))
+        {
+     
+            cy.get("tr td:nth-child(2)").eq(index).next().then(function(price)
+            {
+             const priceText=   price.text()
+             expect(priceText).to.equal('26')
+            })
+        }
+     
+    })
 })
 })
