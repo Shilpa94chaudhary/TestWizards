@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import "cypress-iframe";
 
 describe("Automation Practice website test cases", () => {
   beforeEach(() => {
@@ -131,5 +132,34 @@ describe("Automation Practice website test cases", () => {
     // Click on hidden element forcefully by using {force:tru}, it will click on invisible element
     cy.contains("Top").click({ force: true });
     cy.url().should("include", "top");
+  });
+
+  it("Handle child windows", () => {
+    cy.get("#opentab").then(function (ele) {
+      const url = ele.prop("href");
+      cy.visit(url);
+      // This code will give an error as we can navigate from one domain to another but we can not
+      // preform any operation
+      // cy.get('div.sub-menu-bar a[href="about.html"]').click();
+    });
+  });
+
+  it("Handle child window and perform operations on new domain", () => {
+    cy.get("#opentab").then(function (ele) {
+      const url = ele.prop("href");
+      cy.visit(url);
+      cy.origin(url, () => {
+        cy.get('div.sub-menu-bar a[href="about.html"]').click();
+      });
+    });
+  });
+
+  it.only("Handle iFrames", () => {
+    // We can identify the iframe by using .frameLoaded() function
+    cy.frameLoaded("#courses-iframe");
+    // If we want to access the element in iFrame we have use .iframe() function
+    cy.iframe().find('a[href="mentorship"]').eq(0).click();
+    cy.wait(3000);
+    cy.iframe().find(".pricing-title").should("have.length", 2);
   });
 });
