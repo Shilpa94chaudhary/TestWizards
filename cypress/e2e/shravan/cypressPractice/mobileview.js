@@ -1,6 +1,6 @@
-function mobileview() {
+const mobileview = () => {
     cy.visit({
-        "url": 'https://www.gamezop.com',
+        "url": 'https://www.gamezop.com/en/get-started/category-selection',
         "headers": {
             "cloudfront-is-mobile-viewer": "true",
             //"sec-ch-ua-platform": "Android",
@@ -9,6 +9,6 @@ function mobileview() {
     })
 }
 
-module.exports = {
+export {
     mobileview
 }
