@@ -9,7 +9,7 @@ describe('Gamezop Testcases', function () {
     it('Gamezop Logo Test Case', function () {
         cy.get('[alt="Company Logo"]')
             .should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Flogo%2Fgamezop-main-long-blue.png&w=256&q=75')
-            .should('be.visible')
+            .and('be.visible')
     })
 
     it('Gamezop Language Dropdown Test Case', function () {
@@ -33,6 +33,24 @@ describe('Gamezop Testcases', function () {
         cy.get('[alt="Select Sports Category"]').should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Fcomet%2Fassets%2Fimg%2Fget-started%2Fchoice-sports.png&w=384&q=75')
         cy.get('.style_category_name__27x8e').should('include.text', 'Action').and('include.text', 'Sports')
         cy.get('.category-style_btn__1e6w9').should('include.text', 'Select')
-        cy.get('[alt="Select Action Category"]')
+        cy.get('[alt="Select Action Category"]').click()
+        cy.get('[alt="Select Strategy Category"]').should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Fcomet%2Fassets%2Fimg%2Fget-started%2Fchoice-strategy.png&w=384&q=75')
+        cy.get('[alt="Select Arcade Category"]').should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Fcomet%2Fassets%2Fimg%2Fget-started%2Fchoice-arcade.png&w=384&q=75')
+        cy.get('.style_category_name__27x8e').should('include.text', 'Strategy').and('include.text', 'Arcade')
+        cy.get('[alt="Select Arcade Category"]').click()
+    })
+    it('Gamezop start playing test case', function(){
+        cy.visit('https://www.gamezop.com/en/get-started/start-playing')
+        cy.get('.style_start_playing__3Yr30').should('include.text', 'START PLAYING')
+        cy.get('.style_start_playing__3Yr30').click()
+    })
+    it.only('Gamezop header test cases', function(){
+        cy.get('[alt="Logo"]')
+            .should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Flogo%2Fgamezop-main-long-blue.png&w=256&q=75')
+            .and('be.visible')
+        cy.get('[alt="Astrozop"]')
+            .should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Fcomet%2Fassets%2Fimg%2Fastrozop%2Fastrozop-tarot.gif&w=64&q=75')
+            .and('be.visible')
+        cy.get('.ml-8 > a').should('have.attr', 'href', 'https://6302.read.astrozop.com')
     })
 })
