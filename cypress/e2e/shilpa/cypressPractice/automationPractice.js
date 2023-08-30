@@ -2,9 +2,11 @@
 import "cypress-iframe";
 
 describe("Automation Practice website test cases", () => {
-  beforeEach(() => {
+  beforeEach(function () {
     cy.viewport(1280, 800);
     cy.visit("https://rahulshettyacademy.com/AutomationPractice/");
+    // cy.visit("www.gamezop.com");
+    // cy.viewport(1920, 1080);
   });
 
   it("Click on multiple checkboxes", () => {
@@ -144,17 +146,35 @@ describe("Automation Practice website test cases", () => {
     });
   });
 
-  it("Handle child window and perform operations on new domain", () => {
-    cy.get("#opentab").then(function (ele) {
+  xit("Handle child window and perform operations on new domain", () => {
+    cy.visit("https://www.quizzop.com/");
+    cy.contains("Naruto").click();
+    cy.get(".fixed > .py-12").click();
+    cy.wait(5000);
+    cy.get(".px-20 > .py-12").click();
+    cy.wait(5000);
+    cy.get("div .justify-between a[target='_blank']").then(function (ele) {
       const url = ele.prop("href");
       cy.visit(url);
       cy.origin(url, () => {
-        cy.get('div.sub-menu-bar a[href="about.html"]').click();
+        // cy.get('div.sub-menu-bar a[href="about.html"]').click();
+        cy.get(":nth-child(1) > .style_category__1fk8h").click();
       });
     });
   });
 
-  it.only("Handle iFrames", () => {
+  xit("Gamezop to Astrozop navigation", () => {
+    cy.wait(3000);
+    cy.get("div .items-center .justify-center a").then(function (el) {
+      const url = el.prop("href");
+      cy.visit(url);
+      cy.origin(url, () => {
+        // cy.get('[alt="Tarot Card Selected Illustration"]').should("be.visible");
+      });
+    });
+  });
+
+  it("Handle iFrames", () => {
     // We can identify the iframe by using .frameLoaded() function
     cy.frameLoaded("#courses-iframe");
     // If we want to access the element in iFrame we have use .iframe() function
