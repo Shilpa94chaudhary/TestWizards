@@ -24,11 +24,43 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import HomePage from "../e2e/shilpa/cypressPractice/pageObjects/homePage";
+
 // This command is to add product to the cart with given parameter productName
 Cypress.Commands.add("addProduct", (productName) => {
   cy.get(".card").each(($el, index, $list) => {
     if ($el.text().includes(productName)) {
       cy.get(".btn.btn-info").eq(index).click();
     }
+  });
+});
+
+// Function to compare success message
+Cypress.Commands.add("compareSuccessMessage", (expectedMessage) => {
+  const homepage = new HomePage();
+  homepage.getFormSubmitSuccessMessage().invoke("text").as("successMessage");
+  cy.get("@successMessage").then((message) => {
+    const actualMessage = message.replace(/^\s*×\s*/, "").trim();
+    expect(actualMessage).to.equal(expectedMessage);
+  });
+});
+
+// Function to compare Name field error message
+Cypress.Commands.add("compareNameErrorMessage", (expectedMessage) => {
+  const homepage = new HomePage();
+  homepage.getNameFieldErrorMessage().invoke("text").as("successMessage");
+  cy.get("@successMessage").then((message) => {
+    const actualMessage = message.replace(/^\s*×\s*/, "").trim();
+    expect(actualMessage).to.equal(expectedMessage);
+  });
+});
+
+// Function to compare Email field error message
+Cypress.Commands.add("compareEmailErrorMessage", (expectedMessage) => {
+  const homepage = new HomePage();
+  homepage.getEmailFieldErrorMessage().invoke("text").as("successMessage");
+  cy.get("@successMessage").then((message) => {
+    const actualMessage = message.replace(/^\s*×\s*/, "").trim();
+    expect(actualMessage).to.equal(expectedMessage);
   });
 });

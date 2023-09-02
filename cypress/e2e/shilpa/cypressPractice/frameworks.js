@@ -1,9 +1,11 @@
 /// <reference types="cypress" />
+
+import HomePage from "./pageObjects/homePage";
 describe("Frameworks in cypress", function () {
-  before(function () {
+  beforeEach(function () {
     cy.visit("https://rahulshettyacademy.com/angularpractice/");
 
-    cy.fixture("example").then(function (data) {
+    cy.fixture("userData").then(function (data) {
       this.data = data;
     });
   });
@@ -42,6 +44,7 @@ describe("Frameworks in cypress", function () {
       "Email is required"
     );
 
+    // Fill form
     cy.get("form .form-group:nth-child(1) :nth-child(2)").type(this.data.name);
     cy.get("select").select(this.data.gender);
     cy.get(".form-group:nth-child(2) input").type(this.data.email);
@@ -57,10 +60,26 @@ describe("Frameworks in cypress", function () {
     // Verify the success message when user Submit the form
     cy.get(".btn").click();
     cy.get("div.alert:nth-child(1)").should("be.visible");
-    cy.get("div.alert:nth-child(1) strong").should("have.text", "Success!");
+    // Validate success message
+    // invoke('text') is used to extract the text content of the element.
+    // .as('messageText') creates an alias named 'messageText' for the extracted text content.
+
+    // Call to custom command
+    cy.compareMessage(this.data.formSubmitSuccessMessage);
+
+    // cy.get("div.alert:nth-child(1)").invoke("text").as("successMessage");
+    // cy.get("@successMessage").then((message) => {
+    //   // const successMessage = message.replace(/\n+/g, " ").trim();
+    //   // const successMessage = message.replace("×", "").trim();
+    //   const successMessage = message.replace(/^\s*×\s*/, "").trim();
+    //   const expectedMessage =
+    //     "Success! The Form has been submitted successfully!.";
+
+    //   expect(successMessage).to.equal(expectedMessage);
+    // });
   });
 
-  it.only("Custom command to add product to cart", function () {
+  it("Custom command to add product to cart", function () {
     cy.get(".nav-item:nth-child(2)").click();
 
     // Function to add Blackberry product into the cart
@@ -78,5 +97,52 @@ describe("Frameworks in cypress", function () {
     cy.addProduct("Oppo");
     cy.addProduct("Nokia Edge");
     cy.addProduct("iphone X");
+
+    // If we want to run addProduct command form multiple product names
+    this.data.productName.forEach(function (name) {
+      cy.addProduct(name);
+    });
+  });
+
+  it("Test debugging using pause() or debug(), log in Cypress console", function () {
+    // We can pause the test run in-between to check why the test is failing at a perticular line
+    // Fill form
+    cy.get("form .form-group:nth-child(1) :nth-child(2)").type(this.data.name);
+    cy.get("select").select(this.data.gender);
+
+    /* Test Paused, we can run rest of code by clicking on Resume button in Test Window */
+    // cy.pause();
+
+    cy.get(".form-group:nth-child(2) input").type(this.data.email);
+    cy.get("form .form-group:nth-child(3) :nth-child(2)").type(
+      this.data.password
+    );
+
+    /* To use debug command, give the command with the cypress command as follow */
+
+    cy.get('.form-check [type="checkbox"]').check().debug();
+    cy.get("#inlineRadio1").check();
+
+    // Verify the success message when user Submit the form
+    cy.get(".btn").click();
+
+    // Log in Cypress console instead of Browser console
+    cy.get("div.alert:nth-child(1)").invoke("text").as("successMessage");
+    cy.get("@successMessage").then((message) => {
+      cy.log(message);
+    });
+  });
+
+  it("Use of page objects", function () {
+    const homePage = new HomePage();
+    homePage.getNameInputBox().type(this.data.name);
+    homePage.getGenderInputBox().select(this.data.gender);
+    homePage.getEmailInputBox().type(this.data.email);
+    homePage.getPasswordInputBox().type(this.data.password);
+    homePage.getCheckBox().check();
+    homePage.getStudentEmployementRadioBtn().check();
+    homePage.getDOB().type(this.data.dob);
+    homePage.getSubmitBtn().click();
+    cy.compareMessage(this.data.formSubmitSuccessMessage);
   });
 });
