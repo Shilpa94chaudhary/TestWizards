@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import "cypress-iframe";
 
 describe("Automation Practice website test cases", () => {
   beforeEach(function () {

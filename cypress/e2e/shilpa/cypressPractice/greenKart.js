@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { times } from "lodash";
+
 describe("Greenkart test cases", () => {
   beforeEach(() => {
     cy.viewport(1280, 800);

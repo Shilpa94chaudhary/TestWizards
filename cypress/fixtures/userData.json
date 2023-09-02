@@ -1,0 +1,12 @@
+{
+  "name": "Charlize",
+  "gender": "Female",
+  "email": "abc@gmail.com",
+  "password": "password1234",
+  "productName": ["Nokia Edge", "Blackberry", "iphone X"],
+  "country": "India",
+  "dob": "1994-04-20",
+  "formSubmitSuccessMessage": "Success! The Form has been submitted successfully!.",
+  "nameFieldErrorMessage": "Name is required",
+  "emailFieldErrorMessage": "Email is required"
+}
