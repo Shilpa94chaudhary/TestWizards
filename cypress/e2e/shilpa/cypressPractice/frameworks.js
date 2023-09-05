@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import HomePage from "./pageObjects/homePage";
+import ShopPage from "./pageObjects/shopPage";
 describe("Frameworks in cypress", function () {
   beforeEach(function () {
     cy.visit("https://rahulshettyacademy.com/angularpractice/");
@@ -144,5 +145,32 @@ describe("Frameworks in cypress", function () {
     homePage.getDOB().type(this.data.dob);
     homePage.getSubmitBtn().click();
     cy.compareMessage(this.data.formSubmitSuccessMessage);
+  });
+  it.only("Add item to cart and check total amount", function () {
+    const homePage = new HomePage();
+    const shopPage = new ShopPage();
+    homePage.getShopLink().click();
+    this.data.productName.forEach(function (element) {
+      cy.addProduct(element);
+    });
+    // Go to cart
+    let totalAmount = 0;
+    shopPage.getCheckOutBtn().click();
+    shopPage
+      .getProductPrice()
+      .each(($el, index, $list) => {
+        const amount = $el.text();
+        var price = amount.split(" ");
+        price = price[1];
+        totalAmount = Number(price) + Number(totalAmount);
+      })
+      .then(function () {
+        shopPage.getTotalAmount().then(function (element) {
+          const price = element.text();
+          var finalPrice = price.split(" ");
+          finalPrice = Number(finalPrice[1]);
+          expect(finalPrice).to.equal(totalAmount);
+        });
+      });
   });
 });
