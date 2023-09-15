@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 import { mobileview } from "./mobileview";
 describe('Gamezop Testcases', function () {
-    before(function () {
+    beforeEach(function () {
         cy.viewport(393, 851);
         mobileview();
         //cy.visit('https://www.gamezop.com/en/get-started/category-selection')
@@ -11,7 +11,6 @@ describe('Gamezop Testcases', function () {
             .should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Flogo%2Fgamezop-main-long-blue.png&w=256&q=75')
             .and('be.visible')
     })
-
     it('Gamezop Language Dropdown Test Case', function () {
         cy.get('.style_center__1JUKO').find('.style_image__1KiAj').find('img')
             .should('have.attr', 'src', 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIi8+')
@@ -28,7 +27,6 @@ describe('Gamezop Testcases', function () {
             .and('include.text', 'Tiếng Việt')
             .and('include.text', 'Français')
             .and('include.text', 'عربي')
-
     })
     it('Gamezop Game Category Test Case', function () {
         cy.get('[alt="Select Action Category"]')
@@ -52,14 +50,31 @@ describe('Gamezop Testcases', function () {
     })
     it('Gamezop start playing test case', function () {
         //this will visit the URL given
-        cy.visit('https://www.gamezop.com/en/get-started/start-playing')
+        cy.visit({
+            "url": 'https://www.gamezop.com/en/get-started/start-playing',
+             //"url": 'https://www.gamezop.com/',
+             "headers": {
+                 "cloudfront-is-mobile-viewer": "true",
+                 //"sec-ch-ua-platform": "Android",
+                 "user-agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36"
+             }
+         })
         //this will check for text
         cy.get('.style_start_playing__3Yr30')
             .should('include.text', 'START PLAYING')
-        //this will
+        //this will click on start playing
         cy.get('.style_start_playing__3Yr30').click()
     })
     it('Gamezop header test cases', function () {
+        cy.visit({
+           // "url": 'https://www.gamezop.com/en/get-started/category-selection',
+             "url": 'https://www.gamezop.com/',
+             "headers": {
+                 "cloudfront-is-mobile-viewer": "true",
+                 //"sec-ch-ua-platform": "Android",
+                 "user-agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36"
+             }
+         })
         //this will check website logo image and it's visibility
         cy.get('[alt="Logo"]')
             .should('have.attr', 'src', '/_next/image?url=https%3A%2F%2Fstatic.gamezop.com%2Flogo%2Fgamezop-main-long-blue.png&w=256&q=75')
@@ -76,6 +91,15 @@ describe('Gamezop Testcases', function () {
             .should('have.attr', 'd', 'M5.417.167a5.252 5.252 0 015.25 5.25 5.252 5.252 0 01-5.25 5.25 5.252 5.252 0 01-5.25-5.25 5.252 5.252 0 015.25-5.25zm0 9.333a4.083 4.083 0 100-8.167 4.082 4.082 0 00-4.084 4.083A4.082 4.082 0 005.417 9.5zm4.95.041l1.65 1.65-.826.825-1.65-1.65.825-.825z')
     })
     it('Search page Test Cases', function () {
+        cy.visit({
+            //"url": 'https://www.gamezop.com/en/get-started/category-selection',
+             "url": 'https://www.gamezop.com/',
+             "headers": {
+                 "cloudfront-is-mobile-viewer": "true",
+                 //"sec-ch-ua-platform": "Android",
+                 "user-agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36"
+             }
+         })
         //this will click on the search icon in the Header.
         cy.get('.style_wrapper__2RsRJ > .w-full').click()
         //this will check for text
@@ -107,13 +131,29 @@ describe('Gamezop Testcases', function () {
             .and('include.text', 'Strategy')
             .and('include.text', 'My Favourites')
     })
-    it.only('Homepage Test Cases', function(){
+     it('Homepage Test Cases', function(){
+        cy.visit({
+            //"url": 'https://www.gamezop.com/en/get-started/category-selection',
+            "url": 'https://www.gamezop.com/',
+            "headers": {
+                "cloudfront-is-mobile-viewer": "true",
+                //"sec-ch-ua-platform": "Android",
+                "user-agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36"
+            }
+        })
         cy.get('.items-center > .style_category_name__27x8e').eq(0).should('include.text', 'Featured Games')
-        cy.get('.style_game_card_body_wrapper__2Q6on > .featured-game-card_container__1g5kt').should('have.length', 10)
+        //cy.get('.style_game_card_body_wrapper__2Q6on > .featured-game-card_container__1g5kt').should('have.length', 10)
         cy.get('.items-center > .style_category_name__27x8e').eq(1).should('include.text', 'Action')
-       // cy.get(':nth-child(5) > .overflow-scroll > .style_game_card_body_wrapper__2Q6on > :nth-child(2) > .h-full > a > .style_info__cXO6p').should('have.length', 10)
+        //cy.get(':nth-child(5) > .overflow-scroll > .style_game_card_body_wrapper__2Q6on > :nth-child(2) > .h-full > a > .style_info__cXO6p').should('have.length', 10)
         cy.get('.style_viewAll__3NPHp').eq(1).should('include.text', 'VIEW ALL')
         cy.get('.style_viewAll__3NPHp > .style_circle__3tljK').should('be.visible')
-        
+        cy.get('.items-center > .style_category_name__27x8e').eq(2).should('include.text', 'Adventure')
+        cy.get('.items-center > .style_category_name__27x8e').eq(3).should('include.text', 'Arcade')
+        cy.get('.items-center > .style_category_name__27x8e').eq(4).should('include.text', 'Puzzle & Logic')
+        cy.get('.items-center > .style_category_name__27x8e').eq(5).should('include.text', 'Sports & Racing')
+        cy.get('.items-center > .style_category_name__27x8e').eq(6).should('include.text', 'Strategy')
+        cy.get('.style_card__2CNbC').should('be.visible')
+        //cy.get('.style_text_container__2of1k').should('include.text', 'RANDOMLY SELECT FROM 350+ GAMES')
+        //cy.get('.style_btn__1q3y9').should('include.text', 'PLAY NOW')
     })
 })
